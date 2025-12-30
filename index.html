@@ -18,13 +18,11 @@ body {
   padding: 12px;
 }
 
-/* Container */
 .container {
   max-width: 420px;
   margin: 0 auto;
 }
 
-/* Header */
 .header {
   font-size: 22px;
   font-weight: 700;
@@ -39,14 +37,12 @@ body {
   text-align: center;
 }
 
-/* Grid */
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 14px;
 }
 
-/* Cards */
 .card {
   position: relative;
   overflow: hidden;
@@ -57,6 +53,7 @@ body {
   text-align: center;
   cursor: pointer;
   transition: transform 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .card:active {
@@ -77,9 +74,9 @@ body {
 .ripple {
   position: absolute;
   border-radius: 50%;
+  background: rgba(0,0,0,0.18);
   transform: scale(0);
-  animation: ripple 600ms linear;
-  background: rgba(0, 0, 0, 0.15);
+  animation: ripple 550ms ease-out;
   pointer-events: none;
 }
 
@@ -99,42 +96,42 @@ body {
   <div class="sub">Quick access to essential locations</div>
 
   <div class="grid">
-    <div class="card" onclick="openMap(event,'ChargeMOD Charging Station near me')">
+    <div class="card" onclick="handleClick(event,'ChargeMOD Charging Station near me')">
       <div class="icon">⚡️</div>
       <div class="label">EV Chargers</div>
     </div>
 
-    <div class="card" onclick="openMap(event,'CNG Pump near me')">
+    <div class="card" onclick="handleClick(event,'CNG Pump near me')">
       <div class="icon">⛽</div>
       <div class="label">CNG Pumps</div>
     </div>
 
-    <div class="card" onclick="openMap(event,'Masjid near me')">
+    <div class="card" onclick="handleClick(event,'Masjid near me')">
       <div class="icon">🛐</div>
       <div class="label">Masjids</div>
     </div>
 
-    <div class="card" onclick="openMap(event,'ATM near me')">
+    <div class="card" onclick="handleClick(event,'ATM near me')">
       <div class="icon">💳</div>
       <div class="label">ATMs</div>
     </div>
 
-    <div class="card" onclick="openMap(event,'Car repair workshop near me')">
+    <div class="card" onclick="handleClick(event,'Car repair workshop near me')">
       <div class="icon">🚗</div>
       <div class="label">Car Repair</div>
     </div>
 
-    <div class="card" onclick="openMap(event,'Bike repair workshop near me')">
+    <div class="card" onclick="handleClick(event,'Bike repair workshop near me')">
       <div class="icon">🏍️</div>
       <div class="label">Bike Repair</div>
     </div>
 
-    <div class="card" onclick="openMap(event,'Public restroom near me')">
+    <div class="card" onclick="handleClick(event,'Public restroom near me')">
       <div class="icon">🚻</div>
       <div class="label">Restrooms</div>
     </div>
 
-    <div class="card" onclick="openMap(event,'Petrol Pump near me')">
+    <div class="card" onclick="handleClick(event,'Petrol Pump near me')">
       <div class="icon">⛽</div>
       <div class="label">Petrol Pumps</div>
     </div>
@@ -142,29 +139,31 @@ body {
 </div>
 
 <script>
-function createRipple(event) {
-  const card = event.currentTarget;
-  const circle = document.createElement("span");
-  const diameter = Math.max(card.clientWidth, card.clientHeight);
-  const radius = diameter / 2;
+function handleClick(e, query) {
+  const card = e.currentTarget;
+  const ripple = document.createElement("span");
+  const rect = card.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
 
-  circle.style.width = circle.style.height = `${diameter}px`;
-  circle.style.left = `${event.clientX - card.getBoundingClientRect().left - radius}px`;
-  circle.style.top = `${event.clientY - card.getBoundingClientRect().top - radius}px`;
-  circle.classList.add("ripple");
+  ripple.style.width = ripple.style.height = size + "px";
 
-  const ripple = card.querySelector(".ripple");
-  if (ripple) ripple.remove();
+  const x = (e.clientX || rect.width / 2) - rect.left - size / 2;
+  const y = (e.clientY || rect.height / 2) - rect.top - size / 2;
 
-  card.appendChild(circle);
-}
+  ripple.style.left = x + "px";
+  ripple.style.top = y + "px";
+  ripple.className = "ripple";
 
-function openMap(event, query) {
-  createRipple(event);
-  const url = "https://www.google.com/maps/search/" + encodeURIComponent(query);
+  const oldRipple = card.querySelector(".ripple");
+  if (oldRipple) oldRipple.remove();
+
+  card.appendChild(ripple);
+
   setTimeout(() => {
-    window.location.href = url;
-  }, 120);
+    window.location.href =
+      "https://www.google.com/maps/search/" +
+      encodeURIComponent(query);
+  }, 180);
 }
 </script>
 
