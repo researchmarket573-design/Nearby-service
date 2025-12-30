@@ -15,18 +15,16 @@ body {
   margin: 0;
   background: transparent;
   color: #111;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 16px;
+  padding: 12px;
 }
 
+/* Container */
 .container {
   max-width: 420px;
-  width: 100%;
+  margin: 0 auto;
 }
 
+/* Header */
 .header {
   font-size: 22px;
   font-weight: 700;
@@ -37,7 +35,7 @@ body {
 .sub {
   font-size: 13px;
   color: #6b7280;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   text-align: center;
 }
 
@@ -75,7 +73,7 @@ body {
   font-weight: 600;
 }
 
-/* Ripple Effect */
+/* Ripple */
 .ripple {
   position: absolute;
   border-radius: 50%;
@@ -155,7 +153,7 @@ function createRipple(event) {
   circle.style.top = `${event.clientY - card.getBoundingClientRect().top - radius}px`;
   circle.classList.add("ripple");
 
-  const ripple = card.getElementsByClassName("ripple")[0];
+  const ripple = card.querySelector(".ripple");
   if (ripple) ripple.remove();
 
   card.appendChild(circle);
@@ -166,7 +164,7 @@ function openMap(event, query) {
   const url = "https://www.google.com/maps/search/" + encodeURIComponent(query);
   setTimeout(() => {
     window.location.href = url;
-  }, 150);
+  }, 120);
 }
 </script>
 
