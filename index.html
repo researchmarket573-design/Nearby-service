@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Nearby Services</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, "Segoe UI";
+}
+
+body {
+  margin: 0;
+  background: transparent;
+  color: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 16px;
+}
+
+.container {
+  max-width: 420px;
+  width: 100%;
+}
+
+.header {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.sub {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+/* Cards */
+.card {
+  position: relative;
+  overflow: hidden;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 18px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.card:active {
+  transform: scale(0.96);
+}
+
+.icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Ripple Effect */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 600ms linear;
+  background: rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="header">Nearby Services</div>
+  <div class="sub">Quick access to essential locations</div>
+
+  <div class="grid">
+    <div class="card" onclick="openMap(event,'ChargeMOD Charging Station near me')">
+      <div class="icon">⚡️</div>
+      <div class="label">EV Chargers</div>
+    </div>
+
+    <div class="card" onclick="openMap(event,'CNG Pump near me')">
+      <div class="icon">⛽</div>
+      <div class="label">CNG Pumps</div>
+    </div>
+
+    <div class="card" onclick="openMap(event,'Masjid near me')">
+      <div class="icon">🛐</div>
+      <div class="label">Masjids</div>
+    </div>
+
+    <div class="card" onclick="openMap(event,'ATM near me')">
+      <div class="icon">💳</div>
+      <div class="label">ATMs</div>
+    </div>
+
+    <div class="card" onclick="openMap(event,'Car repair workshop near me')">
+      <div class="icon">🚗</div>
+      <div class="label">Car Repair</div>
+    </div>
+
+    <div class="card" onclick="openMap(event,'Bike repair workshop near me')">
+      <div class="icon">🏍️</div>
+      <div class="label">Bike Repair</div>
+    </div>
+
+    <div class="card" onclick="openMap(event,'Public restroom near me')">
+      <div class="icon">🚻</div>
+      <div class="label">Restrooms</div>
+    </div>
+
+    <div class="card" onclick="openMap(event,'Petrol Pump near me')">
+      <div class="icon">⛽</div>
+      <div class="label">Petrol Pumps</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function createRipple(event) {
+  const card = event.currentTarget;
+  const circle = document.createElement("span");
+  const diameter = Math.max(card.clientWidth, card.clientHeight);
+  const radius = diameter / 2;
+
+  circle.style.width = circle.style.height = `${diameter}px`;
+  circle.style.left = `${event.clientX - card.getBoundingClientRect().left - radius}px`;
+  circle.style.top = `${event.clientY - card.getBoundingClientRect().top - radius}px`;
+  circle.classList.add("ripple");
+
+  const ripple = card.getElementsByClassName("ripple")[0];
+  if (ripple) ripple.remove();
+
+  card.appendChild(circle);
+}
+
+function openMap(event, query) {
+  createRipple(event);
+  const url = "https://www.google.com/maps/search/" + encodeURIComponent(query);
+  setTimeout(() => {
+    window.location.href = url;
+  }, 150);
+}
+</script>
+
+</body>
+</html>
